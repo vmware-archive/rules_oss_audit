@@ -1,0 +1,68 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
+load("@rules_pkg//:mappings.bzl", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+load("@rules_pkg//:rpm.bzl", "pkg_rpm")
+load("//oss_audit:java/oss_audit.bzl", "oss_audit")
+
+package(default_visibility = ["//visibility:public"])
+
+pkg_rpm(
+    name = "oss-audit-example-rpm",
+    srcs = [":java-maven-filegroup"],
+    description = "Package RPM",
+    license = "ASL 2.0",
+    release = "1",
+    summary = "Demo OSS auditing project",
+    version = "1",
+)
+
+oss_audit(
+    name = "rpm-oss-audit",
+    src = ":oss-audit-example-rpm",
+    approved_list = "//examples:data/approved_list.yaml",
+    denied_list = "//examples:data/denied_list.yaml",
+    # Example: suppress build failure due to denied package
+    suppress = ["com.google.code.findbugs:jsr305:3.0.2"],
+)
+
+pkg_tar(
+    name = "oss-audit-example-tar",
+    srcs = [":java-maven-files"],
+)
+
+oss_audit(
+    name = "tar-oss-audit",
+    src = ":oss-audit-example-tar",
+    approved_list = "//examples:data/approved_list.yaml",
+    denied_list = "//examples:data/denied_list.yaml",
+    # Example: suppress build failure due to denied package
+    suppress = ["com.google.code.findbugs:jsr305:3.0.2"],
+)
+
+pkg_filegroup(
+    name = "java-maven-filegroup",
+    srcs = [":java-maven-files"],
+)
+
+pkg_files(
+    name = "java-maven-files",
+    srcs = [
+        ":java-maven",
+    ],
+    prefix = "/usr/lib/oss-audit-example",
+)
+
+java_binary(
+    name = "java-maven",
+    main_class = "myproject.App",
+    runtime_deps = [":java-maven-lib"],
+)
+
+java_library(
+    name = "java-maven-lib",
+    srcs = ["App.java"],
+    deps = ["@maven//:com_google_guava_guava"],
+)

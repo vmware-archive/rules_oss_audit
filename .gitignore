@@ -1,0 +1,5 @@
+bazel-bin
+bazel-genfiles
+bazel-rules_oss_audit
+bazel-out
+bazel-testlogs

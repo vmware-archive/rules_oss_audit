@@ -1,0 +1,20 @@
+# Copyright 2020-2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+load("@oss_audit_deps//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "generate_boms",
+    srcs = [":generate_boms.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        requirement("pyyaml"),
+    ],
+)
+
+py_binary(
+    name = "licensetool",
+    srcs = [":licensetool.py"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,4 @@
+# Copyright 2020-2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# Shorthand for disabling OSS validation enforcement.
+build:nostrict_oss --//oss_audit:strict_oss=false

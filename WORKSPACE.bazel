@@ -1,0 +1,54 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+workspace(name = "rules_oss_audit")
+
+load("//oss_audit:repositories.bzl", "rules_oss_audit_dependencies")
+
+rules_oss_audit_dependencies()
+
+load("//oss_audit:setup.bzl", "rules_oss_audit_setup")
+
+rules_oss_audit_setup()
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+RULES_JVM_EXTERNAL_COMMIT = "4fbe03fb18d6aca876b63b6f3de1b900ccf9c6a4"
+
+http_archive(
+    name = "rules_jvm_external",
+    sha256 = "cf243b1bf7d551f61059fe81ddee92fe389f60e0542907c29e26645639134bb5",
+    strip_prefix = "mirrors_github_rules_jvm_external-{0}-{0}".format(RULES_JVM_EXTERNAL_COMMIT),
+    url = "https://gitlab.eng.vmware.com/api/v4/projects/core-build%2Fmirrors_github_rules_jvm_external/repository/archive.zip?sha={}".format(RULES_JVM_EXTERNAL_COMMIT),
+)
+
+http_archive(
+    name = "rules_pkg",
+    sha256 = "a89e203d3cf264e564fcb96b6e06dd70bc0557356eb48400ce4b5d97c2c3720d",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.5.1/rules_pkg-0.5.1.tar.gz",
+        "https://github.com/bazelbuild/rules_pkg/releases/download/0.5.1/rules_pkg-0.5.1.tar.gz",
+    ],
+)
+
+load("@rules_pkg//toolchains:rpmbuild_configure.bzl", "find_system_rpmbuild")
+
+find_system_rpmbuild(name = "rules_pkg_rpmbuild")
+
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+
+rules_pkg_dependencies()
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    artifacts = [
+        "junit:junit:4.12",
+        "com.google.guava:guava:28.0-jre",
+    ],
+    fetch_sources = True,
+    repositories = [
+        "http://uk.maven.org/maven2",
+        "https://jcenter.bintray.com/",
+    ],
+)
