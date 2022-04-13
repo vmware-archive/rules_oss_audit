@@ -61,14 +61,17 @@ To use `oss_audit` in your project, first add it to your `WORKSPACE` file:
 ```starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-RULE_OSS_AUDIT_COMMIT = "3885863c6953668c6a696b908d138264b76e3d63"
+RULE_OSS_AUDIT_COMMIT = "5ae338712005a616c11d69a669d669e3742c1c83"
 
 http_archive(
     name = "rules_oss_audit",
-    sha256 = "87cd76d9e33a1e70fd99ab795b9e431a41feaeed8e96caaf7dba300fab804116",
+    sha256 = "cabb4d985eb9efe40326436e683a90e74603dd282ae2a0af2a21bf078f07cf1b",
     strip_prefix = "rules_oss_audit-%s" % RULE_OSS_AUDIT_COMMIT,
     url = "https://github.com/vmware/rules_oss_audit/archive/%s.zip" % RULE_OSS_AUDIT_COMMIT,
 )
+
+load("@rules_oss_audit//oss_audit:setup.bzl", "rules_oss_audit_setup")
+rules_oss_audit_setup()
 ```
 
 For basic usage, add the following code in your `BUILD` file:
