@@ -70,6 +70,9 @@ http_archive(
     url = "https://github.com/vmware/rules_oss_audit/archive/%s.zip" % RULE_OSS_AUDIT_COMMIT,
 )
 
+load("@rules_oss_audit//oss_audit:repositories.bzl", "rules_oss_audit_dependencies")
+rules_oss_audit_dependencies()
+
 load("@rules_oss_audit//oss_audit:setup.bzl", "rules_oss_audit_setup")
 rules_oss_audit_setup()
 ```
