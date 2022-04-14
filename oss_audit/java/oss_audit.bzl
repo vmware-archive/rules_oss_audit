@@ -59,7 +59,7 @@ def _collect_maven_bom_impl(_target, ctx):
             deploy_env = deploy_env_set,
         )]
 
-    class_jar = _target[JavaInfo].outputs.jars[0].class_jar
+    class_jar = _target[JavaInfo].outputs.jars[0].class_jar if _target[JavaInfo].outputs.jars else None
     info = []
 
     # Collect the source bundle url location, i.e., a direct link to the
