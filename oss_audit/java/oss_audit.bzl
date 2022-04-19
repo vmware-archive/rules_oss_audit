@@ -164,13 +164,18 @@ def _oss_audit_impl(ctx):
             continue
         license = ctx.actions.declare_file(coord + ".license")
         submanifest = ctx.actions.declare_file(coord + ".submanifest")
-
+        
+        # Decide whether to show progress when running license tool
+        progress_message = None
+        if !ctx.attr.debug:
+            progress_message = "Fetching license info {}".format(ctx.label)
+        
         # Invoke _licensetool to produce .licence file that contains license metadata
         ctx.actions.run(
             outputs = [license],
             executable = ctx.executable._licensetool,
             arguments = [jar_url, license.path],
-            progress_message = "Fetching license info {}".format(ctx.label),
+            progress_message = progress_message,
         )
 
         # Load from .license file and produce .submanifest file with other info
