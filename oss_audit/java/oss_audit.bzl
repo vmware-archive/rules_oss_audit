@@ -167,7 +167,7 @@ def _oss_audit_impl(ctx):
         
         # Decide whether to show progress when running license tool
         progress_message = None
-        log_level = "ERROR"
+        log_level = "WARNING"
         if ctx.attr.debug:
             progress_message = "Fetching license info {}".format(ctx.label)
             log_level = "DEBUG"
@@ -194,7 +194,7 @@ def _oss_audit_impl(ctx):
                 artifact_id,
                 name,
                 srcjar_url if srcjar_url else "",
-                version
+                version,
             ],
             command = """
 set -e
