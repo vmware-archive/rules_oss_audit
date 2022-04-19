@@ -139,8 +139,10 @@ def main():
     )
     parser.add_argument("url", help="Jar file location url")
     parser.add_argument("output", help="Output file")
+    parser.add_argument("--log_level", required=False, default="WARNING",help="Provide logging level. Example --log_level DEBUG', default='WARNING'")
 
     args = parser.parse_args()
+    logging.basicConfig(level=args.log_level)
     collect_license(args.url, args.output)
 
 
