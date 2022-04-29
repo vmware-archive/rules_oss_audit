@@ -5,6 +5,7 @@
 
 """
 
+
 load("@bazel_skylib//lib:new_sets.bzl", "sets")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
@@ -117,6 +118,7 @@ _collect_maven_bom = aspect(
     `maven_coordinates` information and use that to generate oss manifest file.
     """,
     implementation = _collect_maven_bom_impl,
+    apply_to_generating_rules = True,
 )
 
 def _oss_audit_impl(ctx):
